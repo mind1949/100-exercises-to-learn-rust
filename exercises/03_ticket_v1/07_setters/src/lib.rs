@@ -11,27 +11,54 @@ pub struct Ticket {
 
 impl Ticket {
     pub fn new(title: String, description: String, status: String) -> Ticket {
+        Self::validate_title(title.as_ref());
+        Self::validate_description(description.as_ref());
+        Self::validate_status(status.as_ref());
+        let ticket = Ticket {
+            title,
+            description,
+            status,
+        };
+        ticket
+    }
+
+    fn validate_title(title: &str) {
         if title.is_empty() {
             panic!("Title cannot be empty");
         }
         if title.len() > 50 {
             panic!("Title cannot be longer than 50 bytes");
         }
+    }
+
+    fn validate_description(description: &str) {
         if description.is_empty() {
             panic!("Description cannot be empty");
         }
         if description.len() > 500 {
             panic!("Description cannot be longer than 500 bytes");
         }
+    }
+
+    fn validate_status(status: &str) {
         if status != "To-Do" && status != "In Progress" && status != "Done" {
             panic!("Only `To-Do`, `In Progress`, and `Done` statuses are allowed");
         }
+    }
 
-        Ticket {
-            title,
-            description,
-            status,
-        }
+    pub fn set_title(&mut self, v: String) {
+        Self::validate_title(v.as_ref());
+        self.title = v;
+    }
+
+    pub fn set_description(&mut self, v: String) {
+        Self::validate_description(v.as_ref());
+        self.description = v;
+    }
+
+    pub fn set_status(&mut self, v: String) {
+        Self::validate_status(v.as_ref());
+        self.status = v;
     }
 
     pub fn title(&self) -> &String {
