@@ -31,6 +31,10 @@ impl TicketStore {
     pub fn add_ticket(&mut self, ticket: Ticket) {
         self.tickets.push(ticket);
     }
+
+    pub fn iter(&self) -> std::slice::Iter<Ticket> {
+        self.tickets.iter()
+    }
 }
 
 #[cfg(test)]
@@ -56,7 +60,7 @@ mod tests {
         };
         store.add_ticket(ticket);
 
-        let todos: Vec<&Ticket> = store.to_dos();
+        let todos: Vec<&Ticket> = store.iter().filter(|e| e.status == Status::ToDo).collect();
         assert_eq!(todos.len(), 1);
         assert_eq!(todos[0], &todo);
     }
